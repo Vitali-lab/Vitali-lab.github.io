@@ -1,0 +1,69 @@
+/* Process: four numbered rows on one rail, inside an ink slab. A table of how
+   the work goes, not four little cards. */
+.process {
+  margin-top: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  scroll-margin-top: 96px;
+}
+.process-head { display: flex; flex-direction: column; gap: 28px; }
+.process .lede { max-width: 760px; }
+
+.process-slab {
+  border-radius: 28px;
+  padding: 8px 40px;
+}
+.process-list { display: flex; flex-direction: column; }
+.process-row {
+  display: grid;
+  grid-template-columns: 52px 220px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  padding: 26px 12px;
+  margin: 0 -12px;
+  border-top: 1px solid var(--tone-line, var(--line));
+  border-radius: 12px;
+  transition: background-color 0.25s ease;
+}
+.process-row:first-child { border-top: 0; }
+.process-row:hover { background: rgba(255, 255, 255, 0.06); }
+.process-n {
+  padding-top: 5px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--tone-soft, var(--soft));
+}
+.process-t {
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--tone-ink, var(--ink));
+}
+.process-d {
+  max-width: 470px;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.012em;
+  color: var(--tone-muted, var(--muted));
+}
+
+@media (max-width: 1100px) {
+  .process { margin-top: 120px; }
+  .process-row { grid-template-columns: 44px 180px minmax(0, 1fr); gap: 20px; }
+}
+@media (max-width: 900px) {
+  .process-slab { padding: 6px 24px; }
+  .process-row { grid-template-columns: 44px minmax(0, 1fr); gap: 8px 18px; }
+  .process-d { grid-column: 2; }
+}
+@media (max-width: 640px) {
+  .process { margin-top: 120px; gap: 36px; }
+  .process-slab { border-radius: 22px; padding: 4px 18px; }
+  .process-row { grid-template-columns: 1fr; gap: 10px; padding: 22px 8px; }
+  .process-n { padding-top: 0; }
+  .process-t { font-size: 20px; }
+  .process-d { grid-column: auto; font-size: 15px; }
+}

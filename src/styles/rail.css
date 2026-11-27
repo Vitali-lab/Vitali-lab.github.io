@@ -1,0 +1,13 @@
+/* The content rail — one column width for the wide blocks (rows, works).
+   It is centred on the page, and the side margin doubles as the guide lane:
+   Буп sits 24px from the right edge, his bubble opens left, so the cards stop
+   before it instead of running underneath. On narrow screens the margin
+   shrinks with the viewport, and the lane shrinks with it. */
+.content-rail {
+  --edge: clamp(16px, 22vw, 320px);
+  width: min(var(--grid), calc(100% - 2 * var(--edge)));
+  margin-inline: auto;
+}
+@media (max-width: 640px) {
+  .content-rail { --edge: 16px; }
+}

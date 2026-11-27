@@ -1,0 +1,185 @@
+/* Works — a wall of 16:9 previews, read like slides: equal cards, equal gaps,
+   no packing. The section uses the shared content rail, so the right lane stays
+   free for Буп and his line never lands on a card. */
+
+.works {
+  margin-top: 160px;
+  scroll-margin-top: 96px;
+}
+
+.works-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
+  font-size: var(--body); line-height: var(--body-lh); letter-spacing: var(--body-ls);
+}
+.works-label { font-size: inherit; line-height: inherit; letter-spacing: inherit; font-weight: 500; }
+
+/* the categories read as chips, the way a gallery filters its slides */
+.works-filters { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px; }
+.works-filters button {
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: var(--footnote);
+  line-height: 1.45;
+  letter-spacing: var(--footnote-ls);
+  white-space: nowrap;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.works-filters button:hover { background: var(--white); color: var(--ink); }
+.works-filters button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.works-card {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #121212;
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.09);
+  opacity: 0;
+}
+.works-card.is-off { display: none; }
+.works-grid.is-lit .works-card {
+  animation: works-card-in 0.7s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+@keyframes works-card-in {
+  from { opacity: 0; translate: 0 18px; }
+  to { opacity: 1; translate: none; }
+}
+
+.works-photo {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.works-art {
+  position: absolute; inset: 0;
+  transition: transform 0.7s var(--ease-out);
+}
+.works-card:hover .works-art,
+.works-card:focus-within .works-art { transform: scale(1.025); }
+.cover { position: absolute; inset: 0; }
+
+/* the name comes up out of the artwork on a dark wash */
+.works-veil {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(8, 8, 8, 0.55) 0%,
+    rgba(8, 8, 8, 0.22) 40%,
+    rgba(8, 8, 8, 0) 75%
+  );
+  opacity: 0;
+  transition: opacity 0.32s ease;
+  pointer-events: none;
+}
+.works-info {
+  position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 2;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 11px 13px 12px;
+  border-radius: 14px;
+  background: rgba(10, 10, 10, 0.68);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+  color: #ffffff;
+  opacity: 0;
+  translate: 0 10px;
+  transition: opacity 0.3s ease, translate 0.42s var(--ease-out);
+  pointer-events: none;
+}
+.works-card:hover .works-veil,
+.works-card:focus-within .works-veil { opacity: 1; }
+.works-card:hover .works-info,
+.works-card:focus-within .works-info { opacity: 1; translate: none; }
+
+.works-idx {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: var(--mono-caps-ls);
+  color: rgba(255, 255, 255, 0.6);
+}
+.works-title {
+  font-size: clamp(15px, 1.35vw, 19px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.works-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: var(--mono-caps-ls);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.works-go {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ink);
+  box-shadow: 0 8px 20px -10px rgba(10, 10, 10, 0.55);
+  opacity: 0;
+  scale: 0.8;
+  transition: opacity 0.3s ease, scale 0.4s var(--ease-out);
+  pointer-events: none;
+}
+.works-card:hover .works-go,
+.works-card:focus-within .works-go { opacity: 1; scale: 1; }
+
+.works-hit {
+  position: absolute; inset: 0; z-index: 3;
+  border-radius: inherit;
+  padding: 0; border: 0; background: none;
+  cursor: pointer;
+}
+.works-hit:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* a touch screen has no hover: the names stay on the cards */
+@media (hover: none) {
+  .works-veil,
+  .works-info { opacity: 1; }
+  .works-info { translate: none; }
+}
+
+@media (max-width: 1359px) {
+  .works-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .works-grid { gap: 16px; }
+}
+@media (max-width: 1100px) {
+  .works { margin-top: 120px; }
+}
+@media (max-width: 640px) {
+  .works { margin-top: 80px; }
+  .works-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .works-filters {
+    justify-content: flex-start; flex-wrap: nowrap;
+    overflow-x: auto; max-width: 100%;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+  .works-filters::-webkit-scrollbar { display: none; }
+  .works-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 20px; }
+  .works-card { border-radius: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .works-grid.is-lit .works-card { animation: none; opacity: 1; }
+  .works-art, .works-veil, .works-info, .works-go { transition: none; }
+}

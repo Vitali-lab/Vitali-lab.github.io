@@ -1,0 +1,548 @@
+/* Project sheet — a native dialog in the top layer. The band is flat ink, no
+   gradients: the only colour comes from the screenshots under it. Буп sits in
+   the band and says one of the project's six lines. */
+
+body.modal-open { overflow: hidden; }
+
+.case-modal {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  max-width: none; max-height: none;
+  margin: 0; padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+.case-modal[open] { display: grid; place-items: center; }
+
+.case-modal::backdrop {
+  background: rgba(8, 8, 8, 0.58);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  animation: case-backdrop 0.32s ease both;
+}
+.case-modal.is-closing::backdrop { animation: case-backdrop-out 0.19s ease both; }
+
+@keyframes case-backdrop { from { opacity: 0; } to { opacity: 1; } }
+@keyframes case-backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+
+.case-sheet {
+  position: relative;
+  width: min(1120px, calc(100vw - 48px));
+  max-height: min(92vh, 1080px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 28px;
+  background: var(--bg);
+  box-shadow: 0 60px 140px -60px rgba(0, 0, 0, 0.62);
+  animation: case-in 0.36s var(--ease-out) both;
+  scrollbar-width: none;
+}
+.case-sheet::-webkit-scrollbar { display: none; }
+.case-modal.is-closing .case-sheet { animation: case-out 0.19s ease both; }
+
+@keyframes case-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.975); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes case-out {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(10px) scale(0.985); }
+}
+
+/* the close button rides at the top right of the sheet, not of the viewport */
+.case-bar {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  height: 0;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+.case-close {
+  pointer-events: auto;
+  margin: 14px 14px 0 0;
+  display: grid;
+  place-items: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.72);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.28);
+  transition: background-color 0.2s ease, transform 0.25s var(--ease-out);
+}
+.case-close:hover { background: rgba(10, 10, 10, 0.92); transform: rotate(90deg); }
+
+/* ── the band ───────────────────────────────────────────── */
+.case-top {
+  position: relative;
+  padding: 56px 64px 44px;
+  background: #0a0a0a;
+  color: #ffffff;
+}
+.case-eyebrow { display: flex; align-items: center; gap: 12px; }
+.case-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: var(--mono-caps-ls);
+  color: rgba(255, 255, 255, 0.45);
+}
+.case-chip {
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.86);
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: var(--mono-caps-ls);
+  text-transform: uppercase;
+}
+.case-title {
+  margin-top: 22px;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+  max-width: 800px;
+}
+.case-summary {
+  margin-top: 20px;
+  max-width: 640px;
+  font-size: 18px;
+  line-height: 1.55;
+  letter-spacing: -0.012em;
+  color: rgba(255, 255, 255, 0.72);
+}
+.case-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 32px;
+  margin-top: 40px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+.case-facts dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: var(--mono-caps-ls);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+.case-facts dd {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #ffffff;
+}
+.case-facts dd:last-child { color: rgba(255, 255, 255, 0.86); }
+
+/* ── Буп in the band: the assistant is part of the sheet ─── */
+.case-bup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 34px;
+  animation: case-bup-in 0.55s 0.14s var(--ease-out) both;
+}
+.case-bup-face {
+  flex: none;
+  width: 64px; height: 64px;
+  animation: case-bup-pop 0.62s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.case-bup-face .eyt { width: 64px; height: 64px; }
+/* if someone pokes the face in the band, the bubble is white on ink */
+.case-top .eyt-say {
+  background: #ffffff;
+  color: var(--ink);
+  left: calc(50% + 46px);
+  top: calc(50% + 18px);
+  transform-origin: left top;
+}
+.case-top .eyt-say::after { left: -4px; bottom: 10px; right: auto; }
+
+.case-bup-line {
+  position: relative;
+  max-width: 620px;
+  padding: 12px 18px;
+  border-radius: 18px 18px 18px 6px;
+  background: #ffffff;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  animation: case-bup-pop 0.5s 0.26s var(--ease-out) both;
+  transform-origin: left bottom;
+}
+.case-bup-line::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  bottom: 9px;
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  background: #ffffff;
+  transform: rotate(45deg);
+}
+@keyframes case-bup-in {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: none; }
+}
+@keyframes case-bup-pop {
+  from { opacity: 0; scale: 0.86; }
+  to { opacity: 1; scale: 1; }
+}
+
+/* ── the sheet body ─────────────────────────────────────── */
+.case-body { padding: 36px 64px 56px; }
+
+.case-hero {
+  margin: 0 0 44px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #dfe1df;
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.08);
+}
+.case-hero img { display: block; width: 100%; height: auto; }
+.case-cover { position: relative; aspect-ratio: 16 / 9; }
+
+/* ── carousel ───────────────────────────────────────────── */
+.case-carousel { margin: 0 0 44px; }
+.case-stage-wrap { position: relative; }
+.case-stage {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 20px;
+  background: #0c0c0c;
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.08);
+}
+.case-stage::-webkit-scrollbar { display: none; }
+.case-slide {
+  flex: 0 0 100%;
+  margin: 0;
+  aspect-ratio: 1440 / 1000;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  overflow: hidden;
+}
+.case-slide img {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.case-slide--tall { background: #080808; }
+.case-slide--tall img { object-fit: contain; }
+
+.case-arrow {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.2s ease, scale 0.25s var(--ease-out), opacity 0.2s ease;
+}
+.case-arrow--prev { left: 14px; }
+.case-arrow--next { right: 14px; }
+.case-arrow--prev svg { transform: rotate(180deg); }
+.case-arrow:hover { background: #ffffff; scale: 1.06; }
+.case-arrow:disabled { opacity: 0; pointer-events: none; }
+
+.case-count {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 3;
+  padding: 6px 10px;
+  border-radius: var(--r-pill);
+  background: rgba(10, 10, 10, 0.74);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.case-carousel-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 14px;
+}
+.case-caption {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.case-thumbs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 2px;
+  scrollbar-width: none;
+}
+.case-thumbs::-webkit-scrollbar { display: none; }
+.case-thumb {
+  flex: none;
+  width: 46px;
+  aspect-ratio: 1440 / 1000;
+  border-radius: 6px;
+  overflow: hidden;
+  opacity: 0.4;
+  outline: 1.5px solid transparent;
+  outline-offset: 1px;
+  transition: opacity 0.2s ease, outline-color 0.2s ease;
+}
+.case-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.case-thumb:hover { opacity: 0.8; }
+.case-thumb.is-on { opacity: 1; outline-color: rgba(10, 10, 10, 0.6); }
+
+/* ── text ───────────────────────────────────────────────── */
+.case-grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 56px;
+  align-items: start;
+}
+.case-text p {
+  font-size: 18px;
+  line-height: 1.6;
+  letter-spacing: -0.014em;
+  color: var(--ink);
+}
+.case-text p + p { margin-top: 18px; }
+
+.case-did {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 26px 28px 28px;
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.06);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.case-did:hover {
+  background: var(--white);
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.05), 0 18px 40px -28px rgba(10, 10, 10, 0.35);
+}
+.case-h3 {
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: var(--label-ls);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--soft);
+}
+.case-did ul {
+  margin-top: 16px;
+  display: grid;
+  gap: 11px;
+}
+.case-did li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 15px;
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+.case-did li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 9px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.case-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.case-stack span {
+  padding: 5px 10px;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.case-stack span:hover { background: var(--white); color: var(--ink); }
+
+.case-section { margin-top: 52px; }
+.case-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.case-mono {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: var(--mono-caps-ls);
+  color: var(--soft);
+}
+
+/* the white-on-white hover from the closing block, used on every row */
+.case-links { margin: 0 -10px; }
+.case-links li { border-bottom: 1px solid var(--line); }
+.case-links a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  color: var(--ink);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.case-links a:hover { background: rgba(255, 255, 255, 0.85); }
+.case-links a:hover svg { transform: translate(2px, -2px); }
+.case-links svg { transition: transform 0.25s var(--ease-out); color: var(--soft); }
+.case-link-name {
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+.case-link-host {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--soft);
+}
+
+.case-note {
+  margin-top: 24px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(10, 10, 10, 0.04);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.case-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.case-foot p {
+  font-size: 18px;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+}
+.case-foot-actions { display: flex; align-items: center; gap: 10px; }
+.case-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 15px;
+  transition: background-color 0.25s ease;
+}
+.case-cta:hover { background: #2a2a2a; }
+.case-ghost {
+  height: 48px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  font-size: 15px;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.case-ghost:hover { background: rgba(255, 255, 255, 0.85); color: var(--ink); }
+
+/* ── small screens: the sheet is the screen ─────────────── */
+@media (max-width: 900px) {
+  .case-sheet {
+    width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+  .case-top { padding: 46px 20px 30px; }
+  .case-body { padding: 22px 20px 40px; }
+  .case-title { font-size: clamp(32px, 9vw, 44px); }
+  .case-summary { font-size: 16px; }
+  .case-facts {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 28px;
+    padding-top: 18px;
+  }
+  .case-bup { gap: 10px; margin-top: 26px; }
+  /* if someone pokes the face in the band, the bubble is white on ink */
+.case-top .eyt-say {
+  background: #ffffff;
+  color: var(--ink);
+  left: calc(50% + 46px);
+  top: calc(50% + 18px);
+  transform-origin: left top;
+}
+.case-top .eyt-say::after { left: -4px; bottom: 10px; right: auto; }
+
+.case-bup-line { font-size: 14px; padding: 10px 14px; }
+  .case-grid { grid-template-columns: 1fr; gap: 28px; }
+  .case-text p { font-size: 16px; }
+  .case-hero { margin: 0 -20px 28px; border-radius: 0; }
+  .case-carousel { margin: 0 -20px 32px; }
+  .case-stage { border-radius: 0; }
+  .case-arrow { width: 38px; height: 38px; }
+  .case-arrow--prev { left: 10px; }
+  .case-arrow--next { right: 10px; }
+  .case-carousel-foot { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 20px; }
+  .case-thumbs { max-width: 100%; width: 100%; }
+  .case-links a { grid-template-columns: minmax(0, 1fr) auto; }
+  .case-link-host { display: none; }
+  .case-foot { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .case-foot-actions { width: 100%; }
+  .case-cta { flex: 1; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-sheet, .case-modal::backdrop, .case-modal.is-closing .case-sheet, .case-modal.is-closing::backdrop,
+  .case-bup, .case-bup-face, /* if someone pokes the face in the band, the bubble is white on ink */
+.case-top .eyt-say {
+  background: #ffffff;
+  color: var(--ink);
+  left: calc(50% + 46px);
+  top: calc(50% + 18px);
+  transform-origin: left top;
+}
+.case-top .eyt-say::after { left: -4px; bottom: 10px; right: auto; }
+
+.case-bup-line { animation: none; }
+  .case-close, .case-links svg, .case-arrow, .case-thumb { transition: none; }
+  .case-stage { scroll-behavior: auto; }
+}

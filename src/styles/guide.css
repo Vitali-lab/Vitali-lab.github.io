@@ -1,0 +1,122 @@
+/* Буп — the guide. The outer box holds the fixed position; the inner one holds
+   the vanish/reappear pair. */
+.guide {
+  position: fixed;
+  top: 0; left: 0;
+  width: 136px; height: 136px;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 0.6s ease 0.2s;
+}
+body.revealed .guide { opacity: 1; }
+body[data-nav="open"] .guide { opacity: 0; transition-duration: 0.2s; }
+
+.guide-motion {
+  width: 136px; height: 136px;
+  transform-origin: 50% 55%;
+}
+.guide-motion--out { animation: guide-out 170ms cubic-bezier(0.4, 0, 1, 1) forwards; }
+.guide-motion--in { animation: guide-in 300ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* too many pokes: a wind-up and a flight off the right edge */
+.guide--leaving .guide-motion, .guide--returning .guide-motion { pointer-events: none; }
+.guide--leaving .guide-motion { animation: guide-rage-out 560ms cubic-bezier(0.5, 0, 0.9, 0.4) forwards; }
+.guide--away .guide-motion {
+  opacity: 0;
+  transform: translateX(120vw) rotate(12deg) scale(0.6);
+  animation: none !important;
+}
+.guide--returning .guide-motion { animation: guide-in 480ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.guide--leaving .eyt-ball, .guide--away .eyt-ball, .guide--returning .eyt-ball { pointer-events: none; }
+
+.guide .eyt { width: 136px; height: 136px; }
+.guide .eyt-ball {
+  pointer-events: auto;
+  transition: width 0.55s var(--ease-out), height 0.55s var(--ease-out);
+}
+.guide .eyt-say { pointer-events: none; }
+.guide .eyt-body { transition: fill 0.25s ease; }
+/* a soft shadow instead of a hard outline: the ball reads as part of the page */
+.guide .eyt-ball { filter: drop-shadow(0 12px 26px rgba(10, 10, 10, 0.16)); }
+.guide--angry .eyt-ball { filter: drop-shadow(0 12px 26px rgba(226, 52, 52, 0.22)); }
+
+/* Docked at the right: Буп is the speaker, so the bubble opens to his left,
+   its tail touching the ball, the way a chat bubble sits next to an avatar. */
+.guide--dock .eyt-say {
+  left: auto;
+  right: calc(50% + var(--eyt-size, 100px) * 0.5 + 12px);
+  top: 50%;
+  translate: 0 -62%;
+  width: 200px;
+  max-width: 200px;
+  border-radius: 18px 18px 6px 18px;
+  transform-origin: right bottom;
+}
+.guide--dock .eyt-say::after { left: auto; right: -4px; bottom: 10px; }
+
+/* the exit starts to move, then folds away; the entrance is its reverse */
+@keyframes guide-out {
+  0% { opacity: 1; transform: none; }
+  32% { opacity: 1; transform: translateX(calc(var(--dx) * 0.32)) scale(1.02, 0.98); }
+  100% { opacity: 0; transform: translateX(var(--dx)) scale(0.7); }
+}
+@keyframes guide-in {
+  0% { opacity: 0; transform: translateX(var(--dx)) scale(0.7); }
+  58% { opacity: 1; transform: translateX(0) scale(1.05); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes guide-rage-out {
+  0% { opacity: 1; transform: none; }
+  22% { opacity: 1; transform: translateX(-14px) rotate(-4deg) scale(1.03, 0.97); }
+  100% { opacity: 0; transform: translateX(120vw) rotate(12deg) scale(0.6); }
+}
+
+/* DevTools opened: red body, red bubble. The face itself only changes its
+   brows — the eyes stay where they are. */
+.guide--angry .eyt-body { fill: #e23434; }
+.guide--angry .eyt-eye { fill: #1b0505; }
+.guide--angry .eyt-brow { fill: #1b0505; }
+.guide--angry .eyt-lid { stroke: #1b0505; }
+.guide--angry .eyt-say { background: #e23434; }
+
+/* the nap: three z's drifting up from the head */
+.guide-zzz {
+  position: absolute;
+  left: 88px; top: 4px;
+  display: flex; align-items: flex-end; gap: 4px;
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--ink);
+  pointer-events: none;
+}
+/* docked: the z's sit on the ball's shoulder instead of floating above it */
+.guide--dock .guide-zzz { left: auto; right: 26px; top: -12px; }
+.guide-zzz i {
+  font-style: normal;
+  font-size: 21px; line-height: 1;
+  opacity: 0.62;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 8px rgba(255, 255, 255, 0.85);
+  animation: guide-zzz 2.8s ease-in-out infinite;
+}
+.guide-zzz i:nth-child(2) { font-size: 17px; animation-delay: 0.32s; }
+.guide-zzz i:nth-child(3) { font-size: 13px; animation-delay: 0.64s; }
+@keyframes guide-zzz {
+  0%, 100% { opacity: 0.45; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-9px); }
+}
+
+@media (max-width: 1439px) {
+  .guide--dock .eyt-say { width: 160px; max-width: 160px; font-size: 12.5px; }
+}
+@media (max-width: 640px) {
+  /* on phones the character lives in the header mark; the floating ball only
+     covered content, so it steps aside */
+  .guide { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .guide-motion--out, .guide-motion--in, .guide--leaving .guide-motion, .guide--returning .guide-motion { animation-duration: 0.01ms; }
+  .guide-zzz i { animation: none; opacity: 1; }
+}
+

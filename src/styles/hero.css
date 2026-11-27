@@ -1,0 +1,178 @@
+/* Hero: one full screen. A wall of the tools sits behind the copy — real
+   logos, low contrast, so the screen reads as texture first and a sentence
+   second. The tiles come forward only under the pointer. */
+.hero {
+  position: relative;
+  z-index: 6;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 148px 24px 96px;
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+}
+
+.hero-wall {
+  --wall-gap: 9px;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--wall-gap);
+  overflow: hidden;
+}
+.hero-row { display: flex; width: 100%; overflow: hidden; flex: none; }
+.hero-track {
+  display: flex;
+  width: max-content;
+  gap: var(--wall-gap);
+  animation-name: hero-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.hero-row--rev .hero-track { animation-direction: reverse; }
+.hero-set { display: flex; gap: var(--wall-gap); }
+@keyframes hero-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(-50% - var(--wall-gap) / 2), 0, 0); }
+}
+
+.hero-tile {
+  flex: none;
+  width: 64px; height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 0.5px rgba(10, 10, 10, 0.05);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, translate 0.25s var(--ease-out);
+}
+.hero-tile img {
+  width: 26px; height: 26px;
+  opacity: 0.26;
+  transition: opacity 0.25s ease;
+}
+.hero-tile b {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  color: rgba(10, 10, 10, 0.3);
+  transition: color 0.25s ease;
+}
+.hero-tile:hover {
+  background: var(--white);
+  box-shadow: 0 12px 28px -18px rgba(10, 10, 10, 0.45), inset 0 0 0 0.5px rgba(10, 10, 10, 0.06);
+  translate: 0 -2px;
+}
+.hero-tile:hover img { opacity: 0.9; }
+.hero-tile:hover b { color: var(--ink); }
+
+/* the centre is paper, so the sentence never fights the wall */
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    42% 32% at 50% 48%,
+    var(--bg) 0%,
+    rgba(237, 237, 237, 0.92) 42%,
+    rgba(237, 237, 237, 0) 72%
+  );
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-mark {
+  width: 136px; height: 136px;
+  pointer-events: none;
+}
+.hero-title {
+  margin-top: var(--space-3);
+  max-width: 900px;
+  font-size: var(--hero-title); line-height: var(--hero-title-lh); letter-spacing: var(--hero-title-ls); font-weight: 500;
+  text-wrap: balance;
+}
+.hero-sub {
+  margin-top: var(--space-3);
+  max-width: 620px;
+  font-size: var(--body); line-height: var(--body-lh); letter-spacing: var(--body-ls);
+  color: var(--muted); text-wrap: balance;
+}
+
+/* The name is the way to "About me": ink, a little bolder, a waving hand in
+   front of it. The hand waves once the page is in, and again on hover. */
+.hero-name { color: var(--ink); font-weight: 500; white-space: nowrap; }
+.hero-wave {
+  display: inline-flex; align-items: center; justify-content: center; width: 1.3em; height: 1.3em; margin-right: 6px;
+  vertical-align: middle; position: relative; top: -0.1em;
+}
+.hero-wave i { display: block; font-style: normal; font-size: 1.05em; line-height: 1; transform-origin: 70% 80%; }
+body.revealed .hero-wave i { animation: hero-wave 1.2s ease-in-out 1.2s; }
+.hero-name:hover .hero-wave i { animation: hero-wave-again 1.2s ease-in-out; }
+@keyframes hero-wave {
+  0%, 100% { transform: rotate(0); } 14% { transform: rotate(16deg); } 28% { transform: rotate(-8deg); }
+  42% { transform: rotate(14deg); } 56% { transform: rotate(-4deg); } 70% { transform: rotate(9deg); } 84% { transform: rotate(0); }
+}
+@keyframes hero-wave-again {
+  0%, 100% { transform: rotate(0); } 14% { transform: rotate(16deg); } 28% { transform: rotate(-8deg); }
+  42% { transform: rotate(14deg); } 56% { transform: rotate(-4deg); } 70% { transform: rotate(9deg); } 84% { transform: rotate(0); }
+}
+/* The name itself: a light runs across the letters, and on hover a line
+   draws in under it from the left. */
+.hero-nm {
+  position: relative;
+  background: linear-gradient(100deg, var(--ink) 40%, #a8a8a8 50%, var(--ink) 60%) 100% 0 / 260% 100% no-repeat;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-nm::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -0.12em; height: 1.5px; border-radius: 1px;
+  background: var(--ink); transform: scaleX(0); transform-origin: right center;
+  transition: transform 0.45s var(--ease-out);
+}
+.hero-name:hover .hero-nm::after { transform: scaleX(1); transform-origin: left center; }
+body.revealed .hero-nm { animation: hero-sheen 1.1s ease-in-out 1.35s; }
+.hero-name:hover .hero-nm { animation: hero-sheen-again 0.9s ease-in-out; }
+@keyframes hero-sheen { from { background-position: 100% 0; } to { background-position: 0 0; } }
+@keyframes hero-sheen-again { from { background-position: 100% 0; } to { background-position: 0 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-wave i, .hero-nm { animation: none !important; }
+  .hero-nm::after { transition: none; }
+  .hero-track { animation: none; }
+}
+
+.hero-actions { margin-top: var(--space-6); display: flex; justify-content: center; }
+
+@media (max-width: 1100px) {
+  .hero { padding: 136px 20px 88px; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 120px 16px 64px; }
+  .hero-wall { --wall-gap: 7px; }
+  .hero-tile { width: 46px; height: 46px; border-radius: 12px; }
+  .hero-tile img { width: 20px; height: 20px; }
+  .hero-tile b { font-size: 10px; }
+  .hero-veil {
+    background: radial-gradient(
+      92% 26% at 50% 50%,
+      var(--bg) 0%,
+      rgba(237, 237, 237, 0.94) 48%,
+      rgba(237, 237, 237, 0) 80%
+    );
+  }
+  .hero-mark { display: none; }
+  .hero-title { margin-top: var(--space-2); }
+  .hero-actions { margin-top: var(--space-4); }
+}

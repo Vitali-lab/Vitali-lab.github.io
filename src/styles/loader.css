@@ -1,0 +1,48 @@
+/* Loader — a curtain over the page while fonts arrive. On 100 it drops. */
+.loader {
+  position: fixed; inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  transition: transform 1s var(--ease-inout);
+}
+.loader.done { transform: translateY(-100%); }
+
+.loader-mark {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  display: grid; place-items: center;
+}
+.loader-count {
+  position: absolute; left: 50%; bottom: 14.7%;
+  transform: translateX(-50%);
+  font-size: var(--footnote); line-height: var(--footnote-lh); letter-spacing: var(--footnote-ls);
+  color: var(--soft);
+  font-variant-numeric: tabular-nums;
+}
+
+body.loading { overflow: hidden; touch-action: none; }
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: clip;
+  opacity: 0;
+  transition: opacity 0.7s ease 0.15s;
+}
+body.revealed .page { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .loader.done { transform: none; opacity: 0; transition: opacity 0.3s ease; }
+}
+
+/* Hero entrance — one chain, top to bottom, run once the curtain leaves. */
+.hero-rise {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.9s var(--ease-out);
+}
+body.revealed .hero-rise { opacity: 1; transform: none; }
+body.revealed .hero-title { transition-delay: 0.18s; }
+body.revealed .hero-sub { transition-delay: 0.25s; }
+body.revealed .hero-actions { transition-delay: 0.32s; }
+body.revealed .rows-block { transition-delay: 0.4s; }

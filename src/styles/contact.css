@@ -1,0 +1,127 @@
+/* Contact — one centred column: the seal, the title, a line, the call, the
+   contacts as bare glyphs, the copyright. Seen gaps on the 8 grid. */
+.contact {
+  position: relative;
+  margin: 0 auto;
+  padding: 160px 16px var(--space-8);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  scroll-margin-top: 96px;
+  --contact-title: 40px;
+}
+
+/* A soft light follows the pointer behind the closing block: the Spotlight
+   Card idea, used as an ambient wash rather than a card. */
+.contact-light {
+  position: absolute; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--lit, 0);
+  transition: opacity 0.5s ease;
+  background: radial-gradient(440px 440px at var(--cx, 50%) var(--cy, 30%), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 68%);
+}
+
+/* The seal replaces the hanging badge: a slow ring of mono text around the
+   character's face. */
+.seal {
+  position: relative;
+  z-index: 2;
+  width: 212px; height: 212px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+}
+.seal::before {
+  content: ""; position: absolute; inset: 40px;
+  border-radius: 50%;
+  border: 0.5px solid var(--line);
+}
+.seal-ring {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  animation: seal-spin 44s linear infinite;
+}
+.seal:hover .seal-ring { animation-play-state: paused; }
+.seal-ring text {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  fill: var(--muted);
+  text-transform: uppercase;
+}
+.seal-face {
+  position: relative;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center; gap: 11px;
+}
+.seal-face i { width: 4.5px; height: 14px; border-radius: 2.25px; background: var(--bg); }
+.seal--compact { width: 132px; height: 132px; }
+.seal--compact::before { inset: 26px; }
+.seal--compact .seal-face { width: 46px; height: 46px; gap: 7px; }
+.seal--compact .seal-face i { width: 3px; height: 9px; border-radius: 1.5px; }
+.seal--compact .seal-ring text { font-size: 7px; letter-spacing: 0.1em; }
+
+@keyframes seal-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .seal-ring { animation: none; } }
+.contact-title {
+  margin-top: var(--space-6);
+  max-width: 640px;
+  font-size: var(--contact-title); line-height: 1.2; letter-spacing: -0.02em; font-weight: 400;
+  text-wrap: balance;
+}
+.contact-sub {
+  margin-top: calc(var(--space-6) + var(--contact-title) * 0.135);
+  max-width: 460px;
+  font-size: var(--body); line-height: var(--body-lh); letter-spacing: var(--body-ls);
+  color: var(--muted); text-wrap: balance;
+}
+.contact .contact-call { margin-top: calc(var(--space-5) + 4px); }
+.contact-soc { margin-top: calc(var(--space-10) - 15px); display: flex; gap: var(--space-h); }
+.contact-copy {
+  margin-top: calc(var(--space-4) - 14px);
+  font-size: var(--footnote); line-height: var(--footnote-lh); letter-spacing: var(--footnote-ls);
+  color: var(--muted);
+}
+.contact-title, .contact-sub, .contact .contact-call, .contact-soc, .contact-copy { position: relative; z-index: 2; }
+.contact-copy a { color: var(--muted); }
+.contact-copy a:hover { color: var(--ink); }
+
+/* Contacts: bare glyphs on a 48px target, ink on hover. */
+.soc {
+  position: relative; width: 40px; height: 48px;
+  display: grid; place-items: center; border-radius: 12px; color: #8a8a8a;
+  transition: color 0.25s ease, transform 0.25s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.soc svg { width: 22px; height: 22px; overflow: visible; }
+.soc:hover, .soc:focus-visible { color: var(--ink); }
+.soc:active { transform: scale(0.92); }
+.soc:focus:not(:focus-visible) { outline: none; }
+.soc--mail:hover svg { animation: soc-buzz 0.5s ease; transform-origin: 50% 50%; }
+@keyframes soc-buzz {
+  0%, 100% { transform: none; } 20% { transform: rotate(-10deg); } 40% { transform: rotate(9deg); }
+  60% { transform: rotate(-6deg); } 80% { transform: rotate(3deg); }
+}
+@media (prefers-reduced-motion: reduce) { .soc--mail:hover svg { animation: none; } }
+
+@media (max-width: 1100px) {
+  .contact { --contact-title: var(--title-1); }
+  .contact-title { line-height: var(--title-1-lh); letter-spacing: var(--title-1-ls); max-width: 520px; }
+}
+
+@media (max-width: 1100px) {
+  .contact { padding-top: 120px; }
+}
+@media (max-width: 640px) {
+  .contact { padding-top: 96px; }
+  .seal { width: 178px; height: 178px; }
+  .seal::before { inset: 34px; }
+  .seal-face { width: 60px; height: 60px; gap: 9px; }
+  .seal-face i { width: 4px; height: 12px; }
+  .seal-ring text { font-size: 9px; letter-spacing: 0.12em; }
+  .contact-title { margin-top: var(--space-5); }
+  .contact-sub { margin-top: calc(var(--space-3) + var(--contact-title) * 0.21); }
+  .contact .contact-call { margin-top: calc(var(--space-4) + 3px); }
+  .contact-soc { margin-top: calc(var(--space-10) - 15px); }
+}

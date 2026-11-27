@@ -1,0 +1,87 @@
+/* Paint-on-scroll blocks. Each block starts in the opposite tone and is
+   swallowed by three gooey blobs of its target colour; a solid pass settles
+   it and the copy fades in. The edge is the same liquid idea as the header. */
+.paint {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--paint-base);
+  color: var(--paint-ink);
+}
+.paint--ink {
+  --paint-base: var(--white);
+  --paint-target: var(--ink);
+  --paint-ink: #f5f5f5;
+  --tone-ink: #f5f5f5;
+  --tone-muted: rgba(245, 245, 245, 0.64);
+  --tone-soft: rgba(245, 245, 245, 0.46);
+  --tone-line: rgba(255, 255, 255, 0.16);
+  --tone-chip: rgba(255, 255, 255, 0.08);
+  --tone-stroke: rgba(255, 255, 255, 0.18);
+}
+.paint--paper {
+  --paint-base: var(--ink);
+  --paint-target: var(--white);
+  --paint-ink: var(--ink);
+  --tone-ink: var(--ink);
+  --tone-muted: var(--muted);
+  --tone-soft: var(--soft);
+  --tone-line: var(--line);
+  --tone-chip: var(--bg);
+  --tone-stroke: var(--stroke);
+}
+
+.paint-fill {
+  position: absolute;
+  inset: -12%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(22px) contrast(24);
+}
+.paint-fill i {
+  position: absolute;
+  display: block;
+  width: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--paint-target);
+  transform: scale(0);
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--paint-i, 0) * 70ms);
+}
+.paint-fill i:nth-child(1) { left: -12%; top: -32%; }
+.paint-fill i:nth-child(2) { right: -18%; top: 6%; width: 66%; transition-delay: calc(var(--paint-i, 0) * 70ms + 80ms); }
+.paint-fill i:nth-child(3) { left: 6%; bottom: -34%; width: 80%; transition-delay: calc(var(--paint-i, 0) * 70ms + 160ms); }
+
+.paint.painted .paint-fill i { transform: scale(2.4); }
+
+.paint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: var(--paint-target);
+  opacity: 0;
+  transition: opacity 0.35s ease calc(var(--paint-i, 0) * 70ms + 820ms);
+  pointer-events: none;
+}
+.paint.painted::after { opacity: 1; }
+
+.paint-content {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.42s ease calc(var(--paint-i, 0) * 70ms + 520ms);
+}
+.paint.painted .paint-content { opacity: 1; }
+
+/* the tray uses the paint as its own shell */
+.tray.paint { background: var(--paint-base); border-color: var(--tone-stroke); }
+.tray.paint .tray-inner { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .paint-fill i { transition: none; transform: scale(2.4) !important; }
+  .paint::after { transition: none; opacity: 1 !important; }
+  .paint-content { transition: none; opacity: 1 !important; }
+}

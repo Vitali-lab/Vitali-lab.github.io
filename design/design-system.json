@@ -1,0 +1,958 @@
+{
+  "schemaVersion": "1.0.0",
+  "meta": {
+    "name": "Vitfolio design system",
+    "description": "Design language for a personal frontend-developer portfolio, derived from the visual system of kalcheuski.com and adapted for a Russian-language audience and a React codebase.",
+    "created": "2026-11-18",
+    "language": "ru",
+    "reference": {
+      "url": "https://kalcheuski.com/?lang=pl",
+      "author": "Kiryl Kalcheuski",
+      "captured": "2026-11-18",
+      "usage": "Layout, type roles, spacing, palette and motion were read from the site's public CSS and JS. The code in this project is a reimplementation, not a copy of the site's markup.",
+      "reactBits": {
+        "url": "https://reactbits.dev/components/gooey-nav",
+        "author": "David Haz",
+        "license": "MIT + Commons Clause v1.0 — used as part of this site, attribution kept in the component",
+        "used": "Gooey Nav in the header; the contact seal and spotlight are original adaptations of the Circular Text / Spotlight Card ideas, not copies."
+      }
+    },
+    "licenses": {
+      "design": "Reference for study and stylistic adaptation; the original site's brand assets are not reused.",
+      "fonts": "Inter — SIL OFL 1.1. IBM Plex Mono — SIL OFL 1.1. License files live in public/fonts.",
+      "eyeTracker": "EyeTracker component by Bencho, MIT, https://bencho.dev/licence."
+    },
+    "updated": "2026-11-18"
+  },
+  "colors": {
+    "modes": [
+      "light"
+    ],
+    "tokens": [
+      {
+        "name": "--bg",
+        "value": "#EDEDED",
+        "rgb": [
+          237,
+          237,
+          237
+        ],
+        "role": "ground",
+        "usage": "Page background, inner tray, eyes of the nav mark."
+      },
+      {
+        "name": "--surface",
+        "value": "#F5F5F5",
+        "rgb": [
+          245,
+          245,
+          245
+        ],
+        "role": "surface",
+        "usage": "Tray shell, cards, chips, image plates."
+      },
+      {
+        "name": "--white",
+        "value": "#FFFFFF",
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "role": "paper",
+        "usage": "Inner plates on surface, text on ink."
+      },
+      {
+        "name": "--ink",
+        "value": "#0A0A0A",
+        "rgb": [
+          10,
+          10,
+          10
+        ],
+        "role": "ink",
+        "usage": "Body text, marks, CTA fill, selection reverse."
+      },
+      {
+        "name": "--ink-2",
+        "value": "#232323",
+        "rgb": [
+          35,
+          35,
+          35
+        ],
+        "role": "ink hover",
+        "usage": "CTA hover only."
+      },
+      {
+        "name": "--muted",
+        "value": "#5D5D5D",
+        "rgb": [
+          93,
+          93,
+          93
+        ],
+        "role": "muted",
+        "usage": "Secondary copy, labels, captions, nav idle."
+      },
+      {
+        "name": "--soft",
+        "value": "#7A7A7A",
+        "rgb": [
+          122,
+          122,
+          122
+        ],
+        "role": "soft",
+        "usage": "Footer copyright, mono meta, disabled-ish text."
+      },
+      {
+        "name": "--line",
+        "value": "#E0E0E0",
+        "rgb": [
+          224,
+          224,
+          224
+        ],
+        "role": "line",
+        "usage": "Hairline dividers inside trays."
+      },
+      {
+        "name": "--stroke",
+        "value": "#E4E4E4",
+        "rgb": [
+          228,
+          228,
+          228
+        ],
+        "role": "stroke",
+        "usage": "0.5px outlines around trays, cards, chips."
+      },
+      {
+        "name": "--accent",
+        "value": "#2BD46A",
+        "rgb": [
+          43,
+          212,
+          106
+        ],
+        "role": "live",
+        "usage": "One live dot on the CTA. Never a surface colour."
+      }
+    ],
+    "rules": [
+      "One ink, one ground, one accent. No second accent, no gradients as decoration.",
+      "Borders are 0.5px var(--stroke); shadows only for the fixed glass header and the guide.",
+      "Borders are 0.5px var(--stroke); shadows only for the fixed glass header and the guide."
+    ]
+  },
+  "typography": {
+    "families": {
+      "sans": {
+        "token": "--sans",
+        "stack": "\"Inter\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "files": [
+          "/fonts/inter-latin-var.woff2",
+          "/fonts/inter-cyrillic-var.woff2",
+          "/fonts/inter-cyrillic-ext-var.woff2"
+        ],
+        "weightRange": "400 500",
+        "note": "Variable weight axis. 400 for body, 500 for names, figures and emphasis. Never 600+."
+      },
+      "mono": {
+        "token": "--mono",
+        "stack": "\"IBM Plex Mono\", ui-monospace, Menlo, monospace",
+        "files": [
+          "/fonts/ibm-plex-mono-latin-400.woff2",
+          "/fonts/ibm-plex-mono-cyrillic-400.woff2"
+        ],
+        "weight": 400,
+        "note": "Only for indices, category labels, the contact seal and the footer meta. Uppercase, tracking +0.04em."
+      }
+    },
+    "roles": [
+      {
+        "name": "large-title",
+        "token": "--large-title",
+        "size": [
+          "64px",
+          "56px",
+          "34px"
+        ],
+        "lineHeight": 1,
+        "tracking": "-0.035em",
+        "weight": 400,
+        "breakpoints": [
+          "desktop",
+          "<=1100px",
+          "<=640px"
+        ],
+        "usage": "Oversized figures. In this project: optional stat figures and the kit specimen.",
+        "feature": "font-variant-numeric: tabular-nums"
+      },
+      {
+        "name": "hero-title",
+        "token": "--hero-title",
+        "size": [
+          "56px",
+          "56px",
+          "32px"
+        ],
+        "lineHeight": [
+          "1.08",
+          "1.08",
+          "1.1"
+        ],
+        "tracking": "-0.035em",
+        "weight": 500,
+        "breakpoints": [
+          "desktop",
+          "<=1100px",
+          "<=640px"
+        ],
+        "usage": "The one headline on the page. Max width 900px, text-wrap: balance."
+      },
+      {
+        "name": "title-1",
+        "token": "--title-1",
+        "size": [
+          "32px",
+          "28px",
+          "22px"
+        ],
+        "lineHeight": 1.3,
+        "tracking": "-0.012em",
+        "weight": 400,
+        "usage": "Contact title and section-level statements."
+      },
+      {
+        "name": "title-2",
+        "token": "--title-2",
+        "size": [
+          "26px",
+          "24px",
+          "20px"
+        ],
+        "lineHeight": 1.45,
+        "tracking": "-0.016em",
+        "weight": 400,
+        "usage": "Lede under a section label; the longest reading paragraph that is still large."
+      },
+      {
+        "name": "body",
+        "token": "--body",
+        "size": [
+          "18px",
+          "17px",
+          "16px"
+        ],
+        "lineHeight": 1.6,
+        "tracking": "-0.022em",
+        "weight": 400,
+        "usage": "Paragraphs, section labels, steps, case copy. Max line length 68–75 characters."
+      },
+      {
+        "name": "footnote",
+        "token": "--footnote",
+        "size": [
+          "14px",
+          "14px",
+          "14px"
+        ],
+        "lineHeight": 1.6,
+        "tracking": "-0.014em",
+        "weight": 400,
+        "usage": "Nav, buttons, captions, metric descriptions, footer."
+      },
+      {
+        "name": "label",
+        "token": "--label",
+        "size": [
+          "13px",
+          "13px",
+          "13px"
+        ],
+        "lineHeight": 1.6,
+        "tracking": "0.04em",
+        "weight": 400,
+        "family": "mono",
+        "transform": "uppercase",
+        "usage": "Case category, seal, kit meta."
+      },
+      {
+        "name": "menu",
+        "token": "--menu",
+        "size": [
+          "—",
+          "—",
+          "32px"
+        ],
+        "lineHeight": 1.2,
+        "tracking": "-0.02em",
+        "weight": 400,
+        "usage": "Phone menu links only."
+      }
+    ],
+    "rules": [
+      "A role is a bundle: size, leading and tracking move together. Never borrow one from another role.",
+      "Sizes step at 1100px and 640px; they do not scale with the viewport.",
+      "Headline weight is 500, body is 400. No 600/700 — it breaks the Apple-like texture.",
+      "Text above 26px gets negative tracking; small text keeps its air.",
+      "Use .txt (text-box-trim: trim-both; text-box-edge: cap alphabetic) on display text where supported."
+    ]
+  },
+  "layout": {
+    "column": {
+      "token": "--col",
+      "desktop": "837px",
+      "tablet": "800px",
+      "mobile": "calc(100vw - 32px)",
+      "outerMax": "calc(100vw - 48px)"
+    },
+    "grid": {
+      "token": "--grid",
+      "value": "1398px",
+      "liveWidth": "min(1398px, 100% - 2 × edge)",
+      "formula": "centred: equal side margins; at the cap 3 × 450px cards + 2 × 24px gutters",
+      "rail": "shared .content-rail: --edge clamp(16px, 22vw, 320px), margin-inline auto; rows and works use it",
+      "guideLane": "the right margin is also the guide lane: Буп sits 24px from the edge and his bubble opens left, so the cards stop before it"
+    },
+    "gutter": "24px",
+    "safeZone": {
+      "desktop": "24px each side",
+      "tablet": "56px each side",
+      "mobile": "16px each side"
+    },
+    "breakpoints": {
+      "desktop": "> 1100px",
+      "tablet": "641–1100px",
+      "mobile": "<= 640px",
+      "small": "<= 374px"
+    },
+    "sectionRhythm": {
+      "navTop": "fixed glass pill at 24px (12px mobile)",
+      "heroTop": "160px (128px mobile)",
+      "heroMarkToTitle": "32px measured on ink",
+      "heroTitleToLine": "24px measured on ink",
+      "heroLineToActions": "48px (32px mobile)",
+      "worksToAbout": "160px (120px tablet, 80px mobile)",
+      "aboutToProcess": "160px (120px mobile)",
+      "processToContact": "160px (120px tablet, 96px mobile)",
+      "footerBottom": "64px",
+      "rowsToWorks": "160px (120px tablet, 80px mobile)"
+    },
+    "alignment": {
+      "default": "centred single column",
+      "works": "full grid width, cards left-aligned inside the grid",
+      "bodyCopy": "left-aligned inside the statement blocks, centred in the hero and footer"
+    },
+    "spotlight": "a fixed white radial light follows the pointer behind the page (opacity 0.72, 620px); the closing block has its own stronger version"
+  },
+  "spacing": {
+    "scale": {
+      "--space-h": "4px",
+      "--space-1": "8px",
+      "--space-2": "16px",
+      "--space-3": "24px",
+      "--space-4": "32px",
+      "--space-5": "40px",
+      "--space-6": "48px",
+      "--space-7": "56px",
+      "--space-8": "64px",
+      "--space-9": "72px",
+      "--space-10": "80px",
+      "--space-12": "96px",
+      "--space-15": "120px",
+      "--space-20": "160px",
+      "--space-25": "200px"
+    },
+    "rules": [
+      "8-point grid; 4px is the only half-step, for an icon beside its label.",
+      "Gaps are measured between ink, not boxes. Optical corrections are allowed and expected.",
+      "Card padding 32px inside trays, 24px on mobile."
+    ]
+  },
+  "radii": {
+    "card": "32px (20px <=1100, 16px <=640)",
+    "tray": "25px",
+    "inner": "20px",
+    "pill": "999px",
+    "concentricRule": "inner radius = outer radius − padding, so corners stay parallel."
+  },
+  "motion": {
+    "easings": {
+      "--ease-out": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "--ease-inout": "cubic-bezier(0.76, 0, 0.24, 1)",
+      "springish": "cubic-bezier(0.24, 1.34, 0.38, 1)"
+    },
+    "principles": [
+      "Motion answers an action or explains a change. There is no decoration loop except the character and the fan.",
+      "One orchestrated entrance per page; the rows are the one looping decoration, and they pause.",
+      "Animate transform and opacity only. Never blur text mid-animation: Safari rasterises it and snaps.",
+      "rAF loops park themselves off screen and when the tab is hidden.",
+      "prefers-reduced-motion: no flight, no auto-rotation, no parallax; state changes are instant."
+    ],
+    "sequences": {
+      "loader": {
+        "duration": "1100ms first visit, 400ms repeat, 150ms reduced",
+        "count": "ease-out cubic to 100, holds at 99 until fonts and first images are ready, ceiling 3000ms",
+        "character": "EyeTracker idle, cycling Cube → Hexagon → Pill → Circle every 440ms",
+        "exit": "curtain translateY(-100%), 1000ms var(--ease-inout); body gets .revealed",
+        "page": "opacity 0→1 and translateY(-14px)→0, 700ms, 150ms delay"
+      },
+      "heroEntrance": {
+        "title": "translateY(18px)→0, opacity 0→1, 700ms, starts 160ms after reveal",
+        "line": "same, +70ms stagger",
+        "fan": "translateY(60px)→0, 900ms, 250ms after reveal",
+        "guide": "pops in over the reserved mark; the fixed header is already there",
+        "rows": "translateY(18px)→0, 700ms, 400ms after reveal"
+      },
+      "riseOnScroll": {
+        "hidden": "opacity 0, translateY(12px)",
+        "shown": "opacity 1, none",
+        "duration": "700ms opacity / 850ms transform",
+        "stagger": "95ms per item, via --rise-i",
+        "trigger": "first item at 80% viewport"
+      },
+      "mobileMenu": {
+        "sheet": "opacity 300ms, visibility 0s",
+        "items": "translateY(14px)→0, opacity 0→1, 500ms, 40ms stagger",
+        "burger": "bars translate then rotate; 200ms translate, 300–350ms rotate",
+        "dismiss": "link tap, burger, Escape; the pill stays above the sheet; page sections go inert"
+      },
+      "ctaGlass": {
+        "glow": "two radial gradients at --mx/--my, opacity 400ms",
+        "rim": "1.2px masked ring, radial from the pointer",
+        "icon": "arrow out 250ms, calendar in 400ms rotate(-30deg) scale(.6)→none",
+        "press": "scale .97, 200ms"
+      },
+      "socialIcons": {
+        "mail": "buzz 500ms on hover",
+        "github": "colour only",
+        "telegram": "colour only",
+        "note": "The reference's simulated ball, plane and jelly are not ported; three glyphs do not need a physics loop."
+      },
+      "tooltip": {
+        "entrance": "blur(6px)→0, opacity 0→1, translate 2px→0, 380ms var(--ease-out)",
+        "move": "width/height/transform glide 400ms var(--ease-out)",
+        "hideDelay": "80ms"
+      },
+      "languageSwap": "out 180ms to blur(4px) opacity 0, in 260ms — reference only; the build is RU-only",
+      "eyeTracker": {
+        "follow": "spring k=.06, damping .34 − bounce/100 × .22, per 1/60s frame",
+        "blink": "160ms, lid = 1 − .9 sin(π t/160), every 2.6–5.8s (2s idle)",
+        "shapeMorph": "520ms with 30% overshoot, eased radii sampled at 120 rays",
+        "typeLine": "38ms + 0–30ms random per letter, hold 1500ms, never the same line twice",
+        "scale": "press .96, 160ms; release 420ms springish"
+      },
+      "guide": {
+        "trigger": "gap header → ball ≈ 24px; no cross-screen travel",
+        "exit": "260ms; 0–32% starts 10px in the direction of the exit, then opacity 0 + scale .7",
+        "teleport": "outer box jumps to the opposite resting place while invisible",
+        "enter": "420ms from 30px offset with a slight overshoot; the same animation as the exit, reversed",
+        "reverse": "scroll up below trigger − 40px; the pair runs backward",
+        "notes": "section notes only when settled; typed at 38ms/letter and held 4.2s",
+        "devtools": "red body #E23434, furrowed brows, red bubble, “Куда полез? Это не для тебя.”",
+        "reducedMotion": "no out/in animation; the view switches at the trigger",
+        "hover": "one brow, instant (no animation beyond the eye spring)",
+        "idle": "30s → eyes close to 12% of their height; z z z bob and brighten over 2.8s, staggered 0.32s",
+        "rage": "after a snark line: 560ms wind-up and flight 120vw right; 10s off-screen; 480ms bounce in with a return line",
+        "pokes": "4 within 3s; the counter resets after 3s"
+      },
+      "paint": {
+        "trigger": "IntersectionObserver at 14% visible; the works grid uses its existing lit observer",
+        "blobs": "scale 0 → 2.4, 1.1s cubic-bezier(.22,1,.36,1); three staggered by 0 / 80 / 160ms",
+        "settle": "a solid target pass at 820ms, 350ms",
+        "copy": "opacity 0 → 1, 420ms, from 520ms",
+        "reducedMotion": "no blobs; the target background and the copy are there immediately"
+      },
+      "rows": {
+        "layout": "two rows of 16:9 case cards, duplicated for a seamless loop; opposite directions",
+        "speed": "86s and 98s linear; the right row starts −24s out of phase",
+        "hover": "both tracks pause while the rows block is hovered",
+        "mask": "horizontal fade of clamp(40px, 6vw, 120px) at both edges",
+        "reducedMotion": "no movement; the first cards stay as a still strip"
+      }
+    },
+    "reducedMotion": [
+      "Loader: no traverse, curtain fades out 300ms.",
+      "No hero flight, no wave, no sheen, no tooltip blur.",
+      "EyeTracker jumps to the target instead of springing; still blinks.",
+      "Guide: no out/in pair; the view switches at the trigger.",
+      "Rows: no marquee; the strip is still."
+    ]
+  },
+  "components": {
+    "buttonPrimary": {
+      "height": "46px",
+      "radius": "pill",
+      "padding": "0 24px",
+      "fill": "--ink",
+      "text": "#FCFBFB",
+      "size": "footnote 14 / 500",
+      "hover": "--ink-2",
+      "press": "scale .985",
+      "usage": "Rare: the nav call on mobile."
+    },
+    "ctaFace": {
+      "height": "64px",
+      "radius": "pill",
+      "padding": "0 24px 0 8px",
+      "gap": "16px",
+      "portrait": "48px circle, 2px page-coloured ring, 10px accent dot at the lower right",
+      "text": "16 / 500 and a 14 footnote under it",
+      "icon": "20px box, arrow → calendar on hover",
+      "variants": [
+        "ink (footer)",
+        "#E2E2E2 (hero)"
+      ],
+      "usage": "The one main action: Telegram in the hero and contact."
+    },
+    "tray": {
+      "outer": "4px padding, 25px radius, 0.5px --stroke, --surface",
+      "inner": "20px radius, --bg, 32px padding (24px × 16px mobile)",
+      "usage": "Wraps metrics, steps, stack."
+    },
+    "sectionHeader": {
+      "label": "body 18, --muted",
+      "lede": "title-2, --ink, max 600–640px",
+      "gap": "32px"
+    },
+    "caseTile": {
+      "file": "src/components/Works.tsx + src/styles/works.css",
+      "shape": "16:9 preview in a centred CSS grid: 3 columns from 1360px, 2 below, 1 on phones; the card art is a live screenshot (CSS covers remain only as a fallback)",
+      "radius": "20px (16px on phones), 1px ring in rgba(10,10,10,.09)",
+      "artwork": "the CSS CaseCover fills the whole card; no frame, no padding",
+      "hover": "dark wash from the bottom, the name, index and label rise; the artwork scales 1.025 and an arrow disc appears top-right",
+      "touch": "with no hover the wash and the name stay visible",
+      "filter": "chips; a hidden card is display:none and the grid reflows",
+      "reveal": "cards fade/rise 0.7s, 55ms apart, once per page"
+    },
+    "nav": {
+      "desktop": "one fixed glass pill, always visible: face | Gooey Nav | Telegram",
+      "gooey": "ReactBits Gooey Nav, light theme, ink active pill, 4 items (Начало · Работы · О себе · Контакты); the active item follows the section in view",
+      "position": "fixed top 24px, centred, width max-content; no hide, no second version",
+      "mobile": "the same pill full width (16px sides, 56px tall): face | burger; the full-screen sheet opens under the pill, the pill stays above it",
+      "layers": "header 70 · mobile sheet 60 · guide 20 · loader 100"
+    },
+    "footerSocial": {
+      "target": "40 × 48px, radius 12",
+      "glyph": "22px, #8A8A8A → --ink on hover",
+      "press": "scale .92",
+      "alive": "mail buzz; GitHub and Telegram change colour only"
+    },
+    "tooltip": {
+      "status": "reference only — the build uses native title on the three social glyphs",
+      "shape": "ink pill, 6px 10px padding, 8px radius, footnote",
+      "placement": "8px above or below, one per group",
+      "entrance": "blur 6px + 2px travel, 380ms",
+      "cardVariant": "30px radius, 24px top padding, 216px min width, floating shadow"
+    },
+    "loader": {
+      "curtain": "--bg full screen, z 50, count at 14.7% from the bottom in --soft",
+      "mark": "clamp(88px, 15vh, 140px)",
+      "layers": "100, above the header and the guide"
+    },
+    "kit": {
+      "usage": "Internal page at #kit: tokens, roles, icons, motion table, components.",
+      "visibility": "Linked from the footer in mono 12, not part of the employer path."
+    },
+    "contactSeal": {
+      "size": "212px desktop / 178px mobile",
+      "ring": "SVG textPath in IBM Plex Mono 10.5px / 0.14em, “ОТКРЫТ К ПРЕДЛОЖЕНИЯМ · FRONTEND DEVELOPER · MINSK · REMOTE”",
+      "face": "ink disc 72px (60 mobile) with two ground-coloured bars: the character as a stamp",
+      "motion": "44s linear rotation, pauses on hover, stops under prefers-reduced-motion",
+      "replaces": "the reference’s hanging lanyard badge"
+    },
+    "contactSpotlight": {
+      "source": "the Spotlight Card idea, used as an ambient wash, not a card",
+      "light": "radial-gradient 440px at --cx/--cy, rgba(255,255,255,.85) to transparent 68%",
+      "behaviour": "follows a mouse pointer inside the contact block, fades in over 500ms, ignored on touch"
+    },
+    "guide": {
+      "file": "src/components/Guide.tsx + src/styles/guide.css",
+      "name": "Буп",
+      "role": "A whole character: starts on the hero mark, narrates sections, goes angry at DevTools.",
+      "trigger": "any scroll past 4px docks it at once; no ride-up phase",
+      "exit": "170ms: starts moving 10px left, then fades and scales to .7",
+      "teleport": "the outer box moves to the right dock while the inner is invisible; it never travels across the page",
+      "enter": "300ms from 30px left of the dock, scale .7 → 1.05 → 1, opacity 0 → 1",
+      "reverse": "scrolling up below trigger − 40px plays the same pair in the other direction (exit right, enter from the right)",
+      "settle": "the right dock is 52% of the viewport (79% mobile), 24px / 16px from the edge; the bubble opens left",
+      "notes": "project lines and jokes on hover; a hello once per visit; a quiet line every ~1 minute while docked; typing 38ms/letter",
+      "devtools": "red body + red bubble; the brows furrow, the eyes stay",
+      "hover": "one raised brow (curious)",
+      "idle": "30s → sleeping; z z z bobbing above the head (all three visible, 0.32s stagger); reduced motion shows them static",
+      "pokeRage": "4 quick pokes → snark line; a 560ms flight 120vw to the right; 10s away; 480ms bounce back + a line",
+      "phrases": {
+        "snark": [
+          "Всё. Я устал.",
+          "Хватит тыкать.",
+          "Я не кнопка.",
+          "Ещё раз — и я уйду."
+        ],
+        "return": [
+          "Ну что, соскучился?",
+          "Я вернулся. Тыкать больше не надо.",
+          "Ладно, прощаю.",
+          "Скучал? Я тоже."
+        ]
+      },
+      "dock": "the ball is 72px, 24px from the right edge; a soft drop shadow keeps it on the page; the bubble opens left, its tail touching the ball; hidden on phones",
+      "mobileDock": "52px, 16px from the edge; the bubble narrows to 176px",
+      "bubble": "messenger shape: ink fill, 18px radius with a 6px corner toward the tail, a 12px rotated square tail inheriting the fill, 200px max width, pops in from the tail with a slight blur",
+      "return": "after the rage the guide re-plants itself on the spot that matches the current scroll before flying back in, so it never returns crooked",
+      "sleep": "30s idle: closed lids as arcs, straight brows above, bold z z z at the ball’s shoulder",
+      "mobile": "hidden under 640px: the character already lives in the header mark, and the floating ball only covered content"
+    },
+    "paintBlock": {
+      "file": "src/components/PaintBlock.tsx + src/styles/paint.css",
+      "what": "the background of a block alternates black/white and paints in on scroll; the content, covers and layout stay put",
+      "base": "the opposite tone: ink target starts white, paper target starts ink",
+      "paint": "three blurred target-colour blobs (filter blur 22px + contrast 24) merge, then a solid pass settles; the copy fades in over the same beat",
+      "delays": "70ms per tile, 1.1s blob merge, 820ms solid, 520ms copy; reduced motion shows the final state at once",
+      "usedOn": "works tiles (strict alternation) and the about (paper) / process (ink) trays"
+    },
+    "rows": {
+      "file": "src/components/Rows.tsx + src/styles/rows.css",
+      "card": "16:9, clamp(190px,20vw,330px), radius 18, the CSS CaseCover inside",
+      "rows": "two, 16px apart, opposite directions; duplicated sets for a seamless loop",
+      "width": "calc(100% - 208px), matching the works; the right 104px is the guide lane",
+      "hover": "pauses both tracks",
+      "reducedMotion": "static strip"
+    },
+    "projectSheet": {
+      "file": "src/components/ProjectModal.tsx + src/styles/project.css",
+      "element": "a native <dialog> in the top layer: Escape, focus trap and inert background come from the browser",
+      "size": "min(1120px, 100vw - 48px), max-height 92vh, radius 28; full screen on phones",
+      "band": "flat ink, no gradients: index, chip, title, summary, a 3-column fact row, then Буп",
+      "assistant": "Буп, 64px, pops in after 0.2s with one of the project’s six lines in a white messenger bubble",
+      "scroll": ":-webkit-scrollbar is hidden and scrollbar-width: none — the sheet scrolls without a visible bar",
+      "links": "one row per site with hostname; twelve sites in Автобус 1; hover lifts the row to white",
+      "close": "sticky 42px circle at the top right; backdrop click and Escape animate out in 190ms"
+    },
+    "projectCarousel": {
+      "behaviour": "native horizontal scroll-snap, one 16:10 stage: arrows, thumbnails, counter, ArrowLeft/Right, touch swipe",
+      "arrows": "44px white discs, hidden at the ends",
+      "counter": "mono 10px in an ink pill at the top right, aria-live",
+      "thumbs": "46px on their own row under the caption; the strip scrolls without a bar",
+      "tall": "portrait phone shots use object-fit: contain on a near-black stage",
+      "reducedMotion": "arrows jump instead of smooth-scrolling"
+    },
+    "about": {
+      "file": "src/components/About.tsx + src/styles/about.css",
+      "layout": "on the shared content rail (same width as rows and works): section label, a 28–40px statement, a secondary paragraph, then one paper slab",
+      "slab": "radius 28, 40px padding, painted on scroll; four stack groups in a row, a rule, then three fact columns",
+      "mobile": "stack 1 column, facts 1 column, slab radius 22"
+    },
+    "process": {
+      "file": "src/components/Process.tsx + src/styles/process.css",
+      "layout": "on the shared rail: label, a 760px lede, then an ink slab with four rows",
+      "row": "grid 52 / 220 / 1fr — mono number, 22px title, 16px text; 1px top rule; hover lightens the row",
+      "mobile": "number and title in one row, text under it"
+    }
+  },
+  "iconography": {
+    "grid": "24 × 24 viewBox",
+    "stroke": "1.7px at 24px, round caps and joins",
+    "fill": "none by default; brand marks (GitHub, Telegram, LinkedIn) are filled paths",
+    "sizes": {
+      "inline": "16px",
+      "social": "22px",
+      "nav": "24px",
+      "hero": "18px"
+    },
+    "colour": "currentColor only",
+    "optical": "align icons to the cap-height centre of the text beside them, not the line box",
+    "style": "Quiet, slightly rounded, uniform weight. No duotone, no filled UI icons, no 2px strokes.",
+    "set": [
+      {
+        "name": "arrow-right",
+        "use": "CTA, links"
+      },
+      {
+        "name": "arrow-up-right",
+        "use": "External links"
+      },
+      {
+        "name": "download",
+        "use": "Resume"
+      },
+      {
+        "name": "calendar",
+        "use": "CTA hover state"
+      },
+      {
+        "name": "mail",
+        "use": "Email contact"
+      },
+      {
+        "name": "telegram",
+        "use": "Telegram contact (filled)"
+      },
+      {
+        "name": "github",
+        "use": "GitHub contact (filled)"
+      },
+      {
+        "name": "linkedin",
+        "use": "LinkedIn contact (filled)"
+      },
+      {
+        "name": "check",
+        "use": "Confirmations"
+      },
+      {
+        "name": "close",
+        "use": "Dismiss"
+      },
+      {
+        "name": "chevron-down",
+        "use": "Expand"
+      },
+      {
+        "name": "copy",
+        "use": "Copy email"
+      },
+      {
+        "name": "code",
+        "use": "Frontend group"
+      },
+      {
+        "name": "database",
+        "use": "Backend group"
+      },
+      {
+        "name": "layers",
+        "use": "Design system"
+      },
+      {
+        "name": "cpu",
+        "use": "AI group"
+      },
+      {
+        "name": "external",
+        "use": "Open in a new tab"
+      },
+      {
+        "name": "sparkles",
+        "use": "Experiments"
+      },
+      {
+        "name": "map-pin",
+        "use": "Location"
+      },
+      {
+        "name": "clock",
+        "use": "Availability"
+      }
+    ]
+  },
+  "character": {
+    "name": "EyeTracker",
+    "origin": "Bencho, MIT (https://bencho.dev/licence)",
+    "file": "src/components/EyeTracker.tsx",
+    "render": "SVG ball with a clipped pair of rounded rect eyes on a sphere; eyes foreshorten with the turn",
+    "props": {
+      "follow": "0–100, how far the ball turns toward the pointer (default 60)",
+      "bounce": "0–100, spring overshoot (default 30)",
+      "size": "16–180px (default 100)",
+      "shape": "Ball | Circle | Cube | Pill | Hexagon | Hex flat (default Cube)",
+      "eyes": "Slant | Dots | Squares (default Slant)",
+      "eyeScale": "default 1",
+      "eyeWidth": "default 1",
+      "eyeRound": "default 1",
+      "eyeHeight": "default 1",
+      "idle": "mark mode: ignores the pointer, glances every 5s, blinks every 2s",
+      "within": "CSS selector for the box it watches; the face returns to centre outside it",
+      "say": "{ text, id } — an outside line: the guide narrates the section in view through the same bubble",
+      "mood": "\"normal\" | \"curious\" | \"kind\" | \"angry\" — the brows; default normal",
+      "onHover": "(over: boolean) => void — lets the guide turn kind while the ball is hovered",
+      "onPoke": "() => string | false | void — the guide can replace or suppress the random poke line",
+      "sleeping": "boolean — closes the eyes to a line; the brows relax; no blinking"
+    },
+    "where": [
+      {
+        "place": "Nav logo",
+        "settings": "size 25, shape Circle, eyes Dots, idle",
+        "role": "The brand mark; eyes in --bg on an --ink body. A click cycles the shape."
+      },
+      {
+        "place": "Guide (Буп)",
+        "settings": "size 108 in the hero, 72 docked; shape Cube, eyes Slant, eyeScale 1.18, follow 70",
+        "role": "Starts over the hero mark, shifts right after a small scroll, narrates the blocks and comes back on scroll-up."
+      },
+      {
+        "place": "Loader",
+        "settings": "size 120, idle, morphs shape every 440ms",
+        "role": "The countdown mark."
+      }
+    ],
+    "behaviour": {
+      "watching": "The pointer is tracked only inside .hero; outside it the face relaxes to centre.",
+      "poke": "A press (never a drag) opens a speech bubble at the lower right, types one line, holds it 1.5s, folds away.",
+      "blink": "Every 2.6–5.8s, a 160ms squash; idle marks blink every 2s.",
+      "tints": [
+        "#3B5BFF",
+        "#179C52",
+        "#E0307F"
+      ],
+      "lines": [
+        "Привет. Я тебя вижу.",
+        "Буп.",
+        "Щекотно.",
+        "О, привет!",
+        "Не тыкай в меня.",
+        "Я слежу за тобой.",
+        "Ещё раз? Ладно.",
+        "Ты меня нашёл."
+      ],
+      "future": "The bubble is the seam for visitor interaction: canned lines now, an intent/contact flow later.",
+      "guide": {
+        "phases": [
+          "hero",
+          "out (exit, 170ms)",
+          "in (entrance, 300ms)",
+          "dock"
+        ],
+        "dock": "right margin, 72px desktop (52px mobile), 24px / 16px from the edge, vertical 52% / 79%; soft drop shadow; the bubble tail touches the ball",
+        "speech": "on hover: the case line or a joke (40%); on open of a project sheet: one of six lines; a greeting from twenty on the first visit; a quiet line about once a minute",
+        "notes": [
+          "CRM: поиск, резервы, договоры. Пять таблиц в одном окне.",
+          "Магазин с нуля: каталог, витрина и адаптив. Всё работает.",
+          "Приглашение вместо PDF: сценарий, музыка и анимация.",
+          "Диплом: собрал всё сам — от структуры до последнего отступа.",
+          "Внутренние приложения Avtobus1: формы, таблицы, Kendo UI.",
+          "Этот сайт: своя дизайн-система, персонаж и никакой UI-библиотеки."
+        ],
+        "devtools": "red body #E23434, eyes ±28°, red bubble: “Куда полез? Это не для тебя.”",
+        "hover": "one brow up while the ball is hovered",
+        "idle": "after 30s of no activity: eyes closed, z z z; wake on any pointer / scroll / key / touch",
+        "pokeRage": "4 pokes in 3s → snark, leave the screen, 10s away, return with a funny line; pokes during that are ignored",
+        "sleeping": "the guide never sleeps while angry or away",
+        "sleep": "after 30s: the eye bars become shallow arcs, the brows stay straight, bold z z z with a white halo sits at the shoulder"
+      }
+    },
+    "tokenMapping": {
+      "note": "Bencho's tokens are mapped to this project's own tokens instead of being redefined as globals.",
+      "--fill-slab": "--white",
+      "--fill-on": "--ink",
+      "--font-ui": "--sans",
+      "--bg": "--bg",
+      "--card": "--surface",
+      "--ink": "--ink"
+    },
+    "css": {
+      "frame": "200 × 200, grid place-items center; size comes from --eyt-size on the root",
+      "bubble": "left calc(50% + size × .36), top calc(50% + size × .3), radius 6 14 14 14, tint fill, white text 13",
+      "press": "scale .96 with 420ms cubic-bezier(.24,1.34,.38,1)",
+      "caret": "1.5 × 13px, pet-caret steps(1) 1s"
+    },
+    "persona": {
+      "name": "Буп",
+      "role": "The site guide: the same eye ball, but a character with a name, a voice and a route.",
+      "label": "aria-label=\"Буп, гид по сайту\"",
+      "component": "src/components/Guide.tsx",
+      "quirks": {
+        "devtools": "when docked DevTools opens (outer/inner delta > 160px on desktop), the body turns #E23434, the brows furrow and the bubble turns red: “Куда полез? Это не для тебя.” The eyes never move.",
+        "limits": "undocked DevTools does not change the window delta, so it is not detected; the check is desktop-only (>760px) to avoid false positives on phones.",
+        "hover": "the pointer on the ball raises one brow (curious)",
+        "idle": "30 seconds without pointermove / scroll / key / touch → sleeping, eyes closed, z z z floating; any activity wakes",
+        "pokeRage": "4 pokes within 3 seconds → red, a snark line, a 560ms flight off the right edge, 10 seconds away, then a bounce back with a funny line"
+      }
+    },
+    "moods": {
+      "normal": "flat brows, the resting face",
+      "curious": "one brow up (the right one, −16°, lifted 2.8); the left stays flat — on hover",
+      "kind": "both brows lifted 1.8 units and angled −14° / +14° (inner ends up) — after a poke",
+      "angry": "brows closer to the eyes and angled +22° / −22° (inner ends down)",
+      "rule": "between the four expressions only the brows change: angle, gap and lift. The eyes stay put. Sleeping is a separate state: the eyes close, the brows relax."
+    }
+  },
+  "page": {
+    "order": [
+      "loader",
+      "nav",
+      "hero",
+      "rows",
+      "about",
+      "works",
+      "process",
+      "contact"
+    ],
+    "nav": [
+      "Начало",
+      "Работы",
+      "О себе",
+      "Контакты"
+    ],
+    "hero": {
+      "mark": "a 136px reserved spot at the top of the copy, where the fixed guide starts",
+      "title": "Сайты, которые приносят заявки.",
+      "lede": "Я Виталик, фронтенд-разработчик. Делаю и поддерживаю сайты и интерфейсы: B2B-витрины, лендинги, CRM. В портфолио — БигФудМаркет, Golden Motors и сайты холдинга Bus1.",
+      "cta": "Написать в Telegram",
+      "layout": "full viewport (100svh): 15 rows of logo tiles drifting in alternating directions behind the copy, a radial paper veil in the centre, then mark, title, lede and CTA",
+      "wall": "rows of 64px tiles with 9px gaps, enough tiles to fill the viewport twice per row at any size (630 at 1440×1000, 306 at 390×844); rows run 68–114s, every other row in reverse; pointer brings a tile to full contrast",
+      "logos": "public/logos/*.svg from Simple Icons: JS, TS, React, Next, Redux, Vite, HTML5, Sass, Node, Express, PostgreSQL, MongoDB, Firebase, Python, .NET, Docker, npm, Webpack, Tailwind, Git, GitHub, Figma, Vercel, Netlify, OpenCode, Cursor, Claude, DeepSeek, Telegram, Google; GPT, 1C and C# are type tiles"
+    },
+    "works": {
+      "filters": [
+        "Все",
+        "Продукты",
+        "Сайты",
+        "Эксперименты"
+      ],
+      "tiles": 10,
+      "layout": "a centred wall of 16:9 previews: 3 columns from 1360px, 2 below, 1 on phones; every card is a real screenshot of the live site; hover lifts the name and Буп answers with a fact or a joke; a click opens the project sheet"
+    },
+    "process": "Four steps: Понять, Спроектировать, Собрать, Проверить.",
+    "about": "Short first-person paragraph plus stack and facts in a tray.",
+    "contact": "Rotating contact seal, pointer spotlight, title, line, CTA, three socials, copyright. No hanging badge.",
+    "navNote": "Telegram lives in the pill on desktop and in the sheet on a phone.",
+    "rows": "Two 16:9 preview rows moving in opposite directions, edges masked, hover pauses; shares the works rail, so the right lane stays clear for the guide."
+  },
+  "content": {
+    "voice": [
+      "First person, plain verbs, no selling adjectives.",
+      "A sentence does one job. No 'passionate', no 'innovative', no 'cutting-edge'.",
+      "Concrete over grand: name the tool, the flow, the edge case.",
+      "Russian copy; code identifiers and stack names stay in English."
+    ],
+    "rules": [
+      "No invented metrics. Numbers appear only when they are verifiable.",
+      "No fake client logos. Cases link to real URLs or GitHub.",
+      "A CTA names exactly what happens: 'Написать в Telegram', not 'Связаться'."
+    ]
+  },
+  "accessibility": {
+    "contrast": "Body ink on bg 16.4:1; muted on bg 5.9:1; white on ink 17.4:1.",
+    "focus": "2px ink outline, 3px offset, 4px radius; buttons may use an inset ring.",
+    "targets": "48 × 48px minimum for fingers; 40 × 48 for footer glyphs.",
+    "keyboard": [
+      "Skip link to content",
+      "Menu closes on Escape",
+      "EyeTracker is a labelled image and does not trap focus",
+      "Guide: a labelled group; section notes are aria-live, the ball is clickable, no keyboard trap."
+    ],
+    "reducedMotion": "All movement gated; the loader becomes a fade; the rows are static; the character still blinks but does not spring.",
+    "semantics": "One h1, section landmarks, aria-pressed on filters and language, aria-expanded on the burger."
+  },
+  "doNot": [
+    "Do not add gradients as backgrounds for sections.",
+    "Do not put shadows under cards; only the glass header and the guide lift.",
+    "Do not use a second accent colour.",
+    "Do not put shadows under cards; only the glass header and the guide lift.",
+    "Do not use 600/700 weights.",
+    "Do not animate width, height, top or left; use transform.",
+    "Do not blur text in or out on scroll.",
+    "Do not invent numbers, employers or client names.",
+    "Do not redefine Bencho's CSS variables as new globals; map them to project tokens.",
+    "Do not hide the header or introduce a second header state; it is one fixed glass pill.",
+    "Do not let the guide cover the contact CTA at rest; its notes are transient and pointer-events none.",
+    "Do not make the guide travel across the page; it leaves and reappears.",
+    "Do not rotate the eyes for a mood; the brows carry the expression.",
+    "Do not let the guide sleep while it is angry, away or showing DevTools.",
+    "Do not animate the eyes for a mood; only the brows move.",
+    "Do not let the guide or its works line sit over the case cards; the works line is a caption."
+  ]
+}
